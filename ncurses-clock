@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# Launch the ncurses-clock binary
+bin/main.o
