@@ -2,7 +2,7 @@
 
 # Define compiler and compiler flags
 CC = gcc
-CFLAGS = -std=c99 -g -Wall
+CFLAGS = -std=c99 -g -Wall -O2
 INCLUDES =
 
 TARGETS = bin/main.o
