@@ -1,21 +1,21 @@
 #include <ncurses.h>
-#include <stdio.h>
+#include <string.h> 
 
 int main() {
-	// Start curses mode
-	initscr();	
 
-	// Print Hello World
-	printw("Hello World !!!");
+    char mesg[] = "01:19 AM";
+    int row, col;
 
-	// Print it on to the real screen
-	refresh();
+    initscr();
+    getmaxyx(stdscr, row, col);
 
-	// Wait for user input
-	getch();
+    mvprintw(row / 2, (col-strlen(mesg)) / 2, "%s", mesg);
+    mvprintw(row - 1, 0, ":");
+    move(row - 1, 1);
 
-	// End curses mode
-	endwin();
+    refresh();
+    getch();
+    endwin();
 
-	return 0;
+    return 0;
 }
