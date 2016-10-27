@@ -2,25 +2,38 @@
 #include <string.h>
 #include <time.h>
 
-void loopWait();
+static const long WAIT_MSEC = 50;
+static struct timespec WAIT_TIMESPEC;
+static int row, col;
+
+static void initializeWait();
+static void waitInLoop();
+static char *getTimeString();
+static char *getDateString();
+static void printTime(char *currentTime);
+static void printDate(char *currentDate);
+static void printFooter();
+static void cursorToRestPosition();
 
 int main() {
 
+    initializeWait();
     initscr();
 
     while(1) {
-        time_t now = time(0);
-        char *mesg = ctime(&now);
 
-        int row, col;
         getmaxyx(stdscr, row, col);
 
-        mvprintw(row / 2, (col-strlen(mesg)) / 2, "%s", mesg);
-        mvprintw(row - 1, 0, ":");
-        move(row - 1, 1);
+        char *currentTime = getTimeString();
+        char *currentDate = getDateString();
 
+        printTime(currentTime);
+        printDate(currentDate);
+        printFooter();
+
+        cursorToRestPosition();
         refresh();
-        loopWait();
+        waitInLoop();
     }
 
     endwin();
@@ -28,12 +41,37 @@ int main() {
     return 0;
 }
 
-void loopWait() {
+static void initializeWait() {
+    long milliseconds = WAIT_MSEC;
+    WAIT_TIMESPEC.tv_sec = milliseconds / 1000;
+    WAIT_TIMESPEC.tv_nsec = (milliseconds % 1000) * 1000000;
+}
 
-    long milliseconds = 50;
+static void waitInLoop() {
+    nanosleep(&WAIT_TIMESPEC, NULL);
+}
 
-    struct timespec ts;
-    ts.tv_sec = milliseconds / 1000;
-    ts.tv_nsec = (milliseconds % 1000) * 1000000;
-    nanosleep(&ts, NULL);
+static char *getTimeString() {
+    time_t now = time(0);
+    char *mesg = ctime(&now);
+    return mesg;
+}
+
+static char *getDateString() {
+    return "Thursday October 27, 2016";
+}
+
+static void printTime(char *currentTime) {
+    mvprintw(row / 2, (col - strlen(currentTime)) / 2, "%s", currentTime);
+}
+
+static void printDate(char *currentDate) {
+    mvprintw(row / 2 + 1, (col - strlen(currentDate)) / 2, "%s", currentDate);
+}
+static void printFooter() {
+    mvprintw(row - 1, 0, ":");
+}
+
+static void cursorToRestPosition() {
+    move(row - 1, 1);
 }
