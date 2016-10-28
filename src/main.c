@@ -4,11 +4,17 @@
 
 static const long WAIT_MSEC = 50;
 static struct timespec WAIT_TIMESPEC;
+
+static char *TIME_FORMAT = "%l:%M:%S %p";
+static char *DATE_FORMAT = "%A - %B %d, %Y";
+
+static const size_t BUFFER_SIZE = 50;
 static int row, col;
+
 
 static void initializeWait();
 static void waitInLoop();
-static char *getTimeString();
+static void setTimeString(char *timeBuffer);
 static void setDateString(char *dateBuffer);
 static void printTime(char *currentTime);
 static void printDate(char *currentDate);
@@ -17,6 +23,9 @@ static void cursorToRestPosition();
 
 int main() {
 
+    char timeBuffer[BUFFER_SIZE];
+    char dateBuffer[BUFFER_SIZE];        
+
     initializeWait();
     initscr();
 
@@ -24,12 +33,10 @@ int main() {
 
         getmaxyx(stdscr, row, col);
 
-        char *currentTime = getTimeString();
-
-        char dateBuffer[50];        
+        setTimeString(timeBuffer);
         setDateString(dateBuffer);
 
-        printTime(currentTime);
+        printTime(timeBuffer);
         printDate(dateBuffer);
         printFooter();
 
@@ -53,10 +60,12 @@ static void waitInLoop() {
     nanosleep(&WAIT_TIMESPEC, NULL);
 }
 
-static char *getTimeString() {
+static void setTimeString(char *timeBuffer) {
     time_t now = time(0);
-    char *mesg = ctime(&now);
-    return mesg;
+    struct tm* tm_info;
+    tm_info = localtime(&now);
+
+    strftime(timeBuffer, BUFFER_SIZE, TIME_FORMAT, tm_info);
 }
 
 static void setDateString(char *dateBuffer) {
@@ -64,7 +73,7 @@ static void setDateString(char *dateBuffer) {
     struct tm* tm_info;
     tm_info = localtime(&now);
 
-    strftime(dateBuffer, 50, "%A - %B %d, %Y", tm_info);
+    strftime(dateBuffer, BUFFER_SIZE, DATE_FORMAT, tm_info);
 }
 
 static void printTime(char *currentTime) {
