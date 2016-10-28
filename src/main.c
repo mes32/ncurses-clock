@@ -9,7 +9,7 @@ static int row, col;
 static void initializeWait();
 static void waitInLoop();
 static char *getTimeString();
-static char *getDateString();
+static void setDateString(char *dateBuffer);
 static void printTime(char *currentTime);
 static void printDate(char *currentDate);
 static void printFooter();
@@ -25,10 +25,12 @@ int main() {
         getmaxyx(stdscr, row, col);
 
         char *currentTime = getTimeString();
-        char *currentDate = getDateString();
+
+        char dateBuffer[50];        
+        setDateString(dateBuffer);
 
         printTime(currentTime);
-        printDate(currentDate);
+        printDate(dateBuffer);
         printFooter();
 
         cursorToRestPosition();
@@ -57,8 +59,12 @@ static char *getTimeString() {
     return mesg;
 }
 
-static char *getDateString() {
-    return "Thursday October 27, 2016";
+static void setDateString(char *dateBuffer) {
+    time_t now = time(0);
+    struct tm* tm_info;
+    tm_info = localtime(&now);
+
+    strftime(dateBuffer, 50, "%A - %B %d, %Y", tm_info);
 }
 
 static void printTime(char *currentTime) {
