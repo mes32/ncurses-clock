@@ -38,6 +38,11 @@ int main() {
 
     while(1) {
 
+        // Clear window in between loops to handle window resize
+        endwin();
+        refresh();
+        clear();
+
         getmaxyx(stdscr, row, col);
 
         setTimeString(timeBuffer);
@@ -49,6 +54,7 @@ int main() {
 
         cursorToRestPosition();
         refresh();
+
         waitInLoop();
     }
 
