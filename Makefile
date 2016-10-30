@@ -10,6 +10,7 @@ INCLUDES = -lncurses
 MODULES_LIST = \
 	main \
 	dateTimeModel \
+	clockWindow \
 
 OBJECT_FILES = $(MODULES_LIST:%=obj/%.o)
 

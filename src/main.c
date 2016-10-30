@@ -1,5 +1,10 @@
-#include <ncurses.h>
-#include <string.h>
+/**
+ *  main.c - ncurses-clock
+ *
+ *  This this program draws a clock in the terminal window using ncurses.
+ *
+ */
+
 #include <time.h>
 #include "dateTimeModel.h"
 #include "clockWindow.h"
@@ -8,16 +13,16 @@
 static const long WAIT_MSEC = 50;
 
 static struct timespec *initSleep(long milliseconds);
-static void sleepInLoop(struct timespec *durationRef);
+static void sleepInLoop(struct timespec *duration_ts);
 
 
 int main() {
 
     char *timeBuffer = initBuffer();
     char *dateBuffer = initBuffer();        
+    struct timespec *duration_ts = initSleep(WAIT_MSEC);
 
     initClockWindow();
-    struct timespec *sleep_ts = initSleep(WAIT_MSEC);
 
     while(1) {
 
@@ -27,7 +32,7 @@ int main() {
         updateDateBuffer(dateBuffer);
         updateClockWindow(timeBuffer, dateBuffer);
 
-        sleepInLoop(sleep_ts);
+        sleepInLoop(duration_ts);
     }
 
     deleteClockWindow();
@@ -39,14 +44,20 @@ int main() {
 }
 
 
+/**
+ * Initializes sleep functionality. Allocates and returns a time specification struct.
+ * This specification is configured to represent the input duration of sleep in milliseconds.
+ */
 static struct timespec *initSleep(long milliseconds) {
-    struct timespec *durationRef = malloc(sizeof(struct timespec));
-    struct timespec duration = *durationRef;
-    duration.tv_sec = milliseconds / 1000;
-    duration.tv_nsec = (milliseconds % 1000) * 1000000;
-    return durationRef;
+    struct timespec *duration_ts = malloc(sizeof(struct timespec));
+    duration_ts->tv_sec = milliseconds / 1000;
+    duration_ts->tv_nsec = (milliseconds % 1000) * 1000000;
+    return duration_ts;
 }
 
-static void sleepInLoop(struct timespec *durationRef) {
-    nanosleep(durationRef, NULL);
+/**
+ * Sleep for some previously configured duration
+ */
+static void sleepInLoop(struct timespec *duration_ts) {
+    nanosleep(duration_ts, NULL);
 }
