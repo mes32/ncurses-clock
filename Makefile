@@ -1,16 +1,27 @@
 # Makefile for ncurses-clock program
 
-# Define compiler and compiler flags
+# --- Define compiler and compiler options ---
 CC = gcc
 CFLAGS = -std=c99 -g -Wall -O2
 INCLUDES = -lncurses
 
-TARGETS = bin/main.o
 
-all: $(TARGETS)
+# --- List program modules and associated object files ---
+MODULES_LIST = \
+	main \
+	dateTimeModel \
 
-bin/%.o: src/%.c
-	$(CC) $(CFLAGS) $(INCLUDES) -o $@ $<
+OBJECT_FILES = $(MODULES_LIST:%=obj/%.o)
+
+
+# --- Define the build rules ---
+all: bin/main
+
+bin/main : $(OBJECT_FILES)
+	$(CC) $(CFLAGS) $(INCLUDES) $(OBJECT_FILES) -o bin/main
+
+obj/%.o: src/%.c
+	$(CC) $(CFLAGS) $< -o $@ -c 
 
 clean:
-	rm -f $(TARGETS)
+	rm -f bin/main $(OBJECT_FILES)
