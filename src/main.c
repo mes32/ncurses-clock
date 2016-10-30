@@ -1,23 +1,16 @@
 #include <ncurses.h>
 #include <string.h>
 #include <time.h>
+#include "dateTimeModel.h"
 
 
 static const long WAIT_MSEC = 50;
 static struct timespec WAIT_TIMESPEC;
-
-static char *TIME_FORMAT = "%l:%M:%S %p";
-static char *DATE_FORMAT = "%A - %B %d, %Y";
-
-static const size_t BUFFER_SIZE = 50;
 static int row, col;
-
 
 static void initializeNCScreen();
 static void initializeWait();
 static void waitInLoop();
-static void setTimeString(char *timeBuffer);
-static void setDateString(char *dateBuffer);
 static void printTime(char *currentTime);
 static void printDate(char *currentDate);
 static void printFooter();
@@ -28,10 +21,11 @@ static const enum ColorPairType {
     COLOR_PAIR_GREEN = 1
 } ColorPairs;
 
+
 int main() {
 
-    char timeBuffer[BUFFER_SIZE];
-    char dateBuffer[BUFFER_SIZE];        
+    char *timeBuffer = initBuffer();
+    char *dateBuffer = initBuffer();        
 
     initializeNCScreen();
     initializeWait();
@@ -45,8 +39,8 @@ int main() {
 
         getmaxyx(stdscr, row, col);
 
-        setTimeString(timeBuffer);
-        setDateString(dateBuffer);
+        updateTimeBuffer(timeBuffer);
+        updateDateBuffer(dateBuffer);
 
         printTime(timeBuffer);
         printDate(dateBuffer);
@@ -54,11 +48,13 @@ int main() {
 
         cursorToRestPosition();
         refresh();
-
         waitInLoop();
     }
 
     endwin();
+
+    deleteBuffer(&timeBuffer);
+    deleteBuffer(&dateBuffer);
 
     return 0;
 }
@@ -84,22 +80,6 @@ static void initializeWait() {
 
 static void waitInLoop() {
     nanosleep(&WAIT_TIMESPEC, NULL);
-}
-
-static void setTimeString(char *timeBuffer) {
-    time_t now = time(0);
-    struct tm* tm_info;
-    tm_info = localtime(&now);
-
-    strftime(timeBuffer, BUFFER_SIZE, TIME_FORMAT, tm_info);
-}
-
-static void setDateString(char *dateBuffer) {
-    time_t now = time(0);
-    struct tm* tm_info;
-    tm_info = localtime(&now);
-
-    strftime(dateBuffer, BUFFER_SIZE, DATE_FORMAT, tm_info);
 }
 
 static void printTime(char *currentTime) {
