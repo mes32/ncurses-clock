@@ -89,6 +89,8 @@ static void printDate(char *currentDate) {
  */
 static void printFooter() {
     attron(COLOR_PAIR(COLOR_PAIR_GREEN));
+    //mvprintw(row - 2, 0, "(Q) quit, (C) countdown, (T) timer");
+    mvprintw(row - 2, 0, "(Q) quit");
     mvprintw(row - 1, 0, ":");
     attroff(COLOR_PAIR(COLOR_PAIR_GREEN));
 }

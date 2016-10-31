@@ -3,7 +3,7 @@
 # --- Define compiler and compiler options ---
 CC = gcc
 CFLAGS = -std=c99 -g -Wall -O2
-INCLUDES = -lncurses
+INCLUDES = -lncurses -lpthread
 
 
 # --- List program modules and associated object files ---
