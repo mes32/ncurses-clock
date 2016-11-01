@@ -56,10 +56,6 @@ static void *updateClockThreadFunc(void *arg) {
     struct timespec *duration_ts = initSleep(WAIT_MSEC);
 
     while(1) {
-        pthread_mutex_unlock(&lockIsRunning);
-        if (!isRunning) break;
-        pthread_mutex_lock(&lockIsRunning);
-
         resetClockWindow();
 
         updateTimeBuffer(timeBuffer);
@@ -67,6 +63,12 @@ static void *updateClockThreadFunc(void *arg) {
         updateClockWindow(timeBuffer, dateBuffer);
 
         sleepInLoop(duration_ts);
+
+        pthread_mutex_unlock(&lockIsRunning);
+        if (!isRunning) {
+            break;
+        }
+        pthread_mutex_lock(&lockIsRunning);
     }
 
     deleteBuffer(&timeBuffer);
@@ -86,6 +88,7 @@ static void *listenThreadFunc(void *arg) {
             pthread_mutex_unlock(&lockIsRunning);
             isRunning = false;
             pthread_mutex_lock(&lockIsRunning);
+            return NULL;
         }
     }
 

@@ -34,6 +34,12 @@ void initClockWindow() {
     init_pair(COLOR_PAIR_WHITE, COLOR_WHITE, COLOR_BLACK);
     init_pair(COLOR_PAIR_GREEN, COLOR_GREEN, COLOR_BLACK);
     wbkgd(window, COLOR_PAIR(COLOR_PAIR_WHITE));
+
+    cbreak();
+    noecho();
+
+    clear();
+    refresh();
 }
 
 /**
@@ -63,7 +69,9 @@ void updateClockWindow(char *timeBuffer, char *dateBuffer) {
  */
 void deleteClockWindow() {
 	// TODO: add free()
-	endwin();
+    curs_set(1);
+    clear();
+    endwin();
 }
 
 /**
