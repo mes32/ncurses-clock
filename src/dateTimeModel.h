@@ -10,6 +10,7 @@
 #define DATE_TIME_MODEL_H
 
 #include <assert.h>
+#include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
@@ -18,7 +19,7 @@
 /**
  * Configures the time mode (12-hour or 24-hour) used for the date-time-model
  */
-void configureTimeMode(int use24h);
+void configureTimeMode(bool use24h);
 
 /**
  * Initialize a string to hold date/time information

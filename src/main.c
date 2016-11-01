@@ -5,13 +5,14 @@
  *
  */
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
 #include <pthread.h>
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <time.h>
-#include "dateTimeModel.h"
 #include "clockWindow.h"
+#include "dateTimeModel.h"
 
 
 typedef struct {
