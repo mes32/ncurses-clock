@@ -9,10 +9,28 @@
 #include "dateTimeModel.h"
 
 
-static const char *TIME_FORMAT_STRING = "%l:%M:%S %p";     // Format time as a string ( 2:03:56 PM)
-static const char *DATE_FORMAT_STRING = "%A - %B %d, %Y";  // Format date as a string Sunday - October 30, 2016
-static const size_t BUFFER_SIZE = 50;                      // Number of characters in string buffers
+static const char *TIME_FORMAT_STRING_12H = "%l:%M:%S %p";  // Format time as a string ( 2:03:56 PM)
+static const char *TIME_FORMAT_STRING_24H = "%H:%M:%S";     // Format time as a string (14:03:56)
+static const char *DATE_FORMAT_STRING = "%A - %B %d, %Y";   // Format date as a string Sunday - October 30, 2016
+static const size_t BUFFER_SIZE = 50;                       // Number of characters in string buffers
 
+static char TIME_FORMAT_STRING[16];
+
+
+/**
+ * Configures the time mode (12-hour or 24-hour) used for the date-time-model
+ */
+void configureTimeMode(int use24h) {
+    // TODO: This function should take the entire configuration struct ProgramConfig
+    // TODO: TIME_FORMAT_STRING len = 16 is a magic number
+    if (use24h) {
+        size_t len = strlen(TIME_FORMAT_STRING_24H);
+        strncpy(TIME_FORMAT_STRING, TIME_FORMAT_STRING_24H, len);
+    } else {
+        size_t len = strlen(TIME_FORMAT_STRING_12H);
+        strncpy(TIME_FORMAT_STRING, TIME_FORMAT_STRING_12H, len);
+    }
+}
 
 /**
  * Initialize a string to hold date/time information

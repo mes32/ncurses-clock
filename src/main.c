@@ -5,11 +5,20 @@
  *
  */
 
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
 #include <pthread.h>
 #include <time.h>
 #include "dateTimeModel.h"
 #include "clockWindow.h"
 
+
+typedef struct {
+    bool shouldExit;
+    int exitCode;
+    bool use24h;
+} ProgramConfig;
 
 static const long WAIT_MSEC = 50;
 
@@ -17,13 +26,22 @@ static bool isRunning;
 static pthread_mutex_t lockIsRunning;
 
 
+static ProgramConfig *scanArguments(int argc, char *argv[]);
+static void printUsage();
 static void *updateClockThreadFunc(void *arg);
 static void *listenThreadFunc(void *arg);
 static struct timespec *initSleep(long milliseconds);
 static void sleepInLoop(struct timespec *duration_ts);
 
 
-int main() {
+int main(int argc, char *argv[]) {
+
+    ProgramConfig *config = scanArguments(argc, argv);
+    if (config->shouldExit) {
+        return config->exitCode;
+    }
+
+    configureTimeMode(config->use24h);
 
     isRunning = true;
     if (pthread_mutex_init(&lockIsRunning, NULL) != 0) {
@@ -45,6 +63,58 @@ int main() {
     return 0;
 }
 
+
+/**
+ * Scans program arguments and set the configuration struct
+ */
+static ProgramConfig *scanArguments(int argc, char *argv[]) {
+    ProgramConfig *config = malloc(sizeof(ProgramConfig));
+
+    config->shouldExit = false;
+    config->exitCode = 0;
+    config->use24h = false;
+
+    bool unknownArg = false;
+    int i;
+    for (i = 1; i < argc; i++) {
+        if (strcmp(argv[i], "-12h") == 0) {
+            // Do nothing. This is the default setting.
+        } else if (strcmp(argv[i], "-24h") == 0) {
+            config->use24h = true;
+        } else if (strcmp(argv[i], "-help") == 0) {
+            config->shouldExit = true;
+            printUsage();
+        } else {
+            unknownArg = true;
+            break;
+        }
+    }
+
+    if (unknownArg) {
+        config->shouldExit = true;
+        config->exitCode = 1;
+        printUsage();
+        fprintf(stderr, "!!! Error, encountered an unknown argument: %s\n", argv[i]);
+    }
+    return config;
+}
+
+/**
+ * Prints a short description of the program and lists the usage options
+ */
+static void printUsage() {
+    printf(
+    "\n"
+    "ncurses-clock -- draws a clock in the terminal window using the ncurses library\n"
+    "\n"
+    "Usage: ncurses-clock [options]\n"
+    "  options:\n"
+    "    -12h     Display time using 12 hour mode. This is the default.\n"
+    "    -24h     Display time using 24 hour mode\n"
+    "    -help    Display this help message\n"
+    "\n"
+    );
+}
 
 /**
  * Upates the clock window using a pthread

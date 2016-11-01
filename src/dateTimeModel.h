@@ -16,6 +16,11 @@
 
 
 /**
+ * Configures the time mode (12-hour or 24-hour) used for the date-time-model
+ */
+void configureTimeMode(int use24h);
+
+/**
  * Initialize a string to hold date/time information
  */
 char *initBuffer();
