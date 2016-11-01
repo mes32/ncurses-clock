@@ -9,8 +9,9 @@ INCLUDES = -lncurses -lpthread
 # --- List program modules and associated object files ---
 MODULES_LIST = \
 	main \
-	dateTimeModel \
 	clockWindow \
+	dateTimeModel \
+	scanAndConfig \
 
 OBJECT_FILES = $(MODULES_LIST:%=obj/%.o)
 

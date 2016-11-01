@@ -20,10 +20,9 @@ static char TIME_FORMAT_STRING[16];
 /**
  * Configures the time mode (12-hour or 24-hour) used for the date-time-model
  */
-void configureTimeMode(bool use24h) {
-    // TODO: This function should take the entire configuration struct ProgramConfig
+void configureTimeMode(ProgramConfig config) {
     // TODO: TIME_FORMAT_STRING len = 16 is a magic number
-    if (use24h) {
+    if (config.use24h) {
         size_t len = strlen(TIME_FORMAT_STRING_24H);
         strncpy(TIME_FORMAT_STRING, TIME_FORMAT_STRING_24H, len);
     } else {
