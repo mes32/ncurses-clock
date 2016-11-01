@@ -74,13 +74,27 @@ static ProgramConfig *scanArguments(int argc, char *argv[]) {
     config->exitCode = 0;
     config->use24h = false;
 
+    bool hoursSet = false;
+    bool hoursConflict = false;
     bool unknownArg = false;
     int i;
     for (i = 1; i < argc; i++) {
         if (strcmp(argv[i], "-12h") == 0) {
-            // Do nothing. This is the default setting.
+            if (hoursSet && config->use24h) {
+                hoursConflict = true;
+                break;
+            } else {
+                hoursSet = true;
+                config->use24h = false;
+            }
         } else if (strcmp(argv[i], "-24h") == 0) {
-            config->use24h = true;
+            if (hoursSet && !config->use24h) {
+                hoursConflict = true;
+                break;
+            } else {
+                hoursSet = true;
+                config->use24h = true;
+            }
         } else if (strcmp(argv[i], "-help") == 0) {
             config->shouldExit = true;
             printUsage();
@@ -95,7 +109,13 @@ static ProgramConfig *scanArguments(int argc, char *argv[]) {
         config->exitCode = 1;
         printUsage();
         fprintf(stderr, "!!! Error, encountered an unknown argument: %s\n", argv[i]);
+    } else if (hoursConflict) {
+        config->shouldExit = true;
+        config->exitCode = 1;
+        printUsage();
+        fprintf(stderr, "!!! Error, conflicting arguments for time mode (12-hour versus 24-hour)\n");
     }
+
     return config;
 }
 
