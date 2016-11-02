@@ -68,7 +68,7 @@ void updateClockWindow(char *timeBuffer, char *dateBuffer) {
  * Delete the window and clean up
  */
 void deleteClockWindow() {
-	// TODO: add free()
+	// TODO: add free()?
     curs_set(1);
     clear();
     endwin();

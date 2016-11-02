@@ -7,19 +7,12 @@
 
 #include <pthread.h>
 #include <stdbool.h>
-#include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 #include <time.h>
 #include "clockWindow.h"
 #include "dateTimeModel.h"
+#include "scanAndConfig.h"
 
-
-typedef struct {
-    bool shouldExit;
-    int exitCode;
-    bool use24h;
-} ProgramConfig;
 
 static const long WAIT_MSEC = 50;
 
@@ -27,8 +20,6 @@ static bool isRunning;
 static pthread_mutex_t lockIsRunning;
 
 
-static ProgramConfig *scanArguments(int argc, char *argv[]);
-static void printUsage();
 static void *updateClockThreadFunc(void *arg);
 static void *listenThreadFunc(void *arg);
 static struct timespec *initSleep(long milliseconds);
@@ -42,7 +33,7 @@ int main(int argc, char *argv[]) {
         return config->exitCode;
     }
 
-    configureTimeMode(config->use24h);
+    configureTimeMode(*config);
 
     isRunning = true;
     if (pthread_mutex_init(&lockIsRunning, NULL) != 0) {
@@ -64,78 +55,6 @@ int main(int argc, char *argv[]) {
     return 0;
 }
 
-
-/**
- * Scans program arguments and set the configuration struct
- */
-static ProgramConfig *scanArguments(int argc, char *argv[]) {
-    ProgramConfig *config = malloc(sizeof(ProgramConfig));
-
-    config->shouldExit = false;
-    config->exitCode = 0;
-    config->use24h = false;
-
-    bool hoursSet = false;
-    bool hoursConflict = false;
-    bool unknownArg = false;
-    int i;
-    for (i = 1; i < argc; i++) {
-        if (strcmp(argv[i], "-12h") == 0) {
-            if (hoursSet && config->use24h) {
-                hoursConflict = true;
-                break;
-            } else {
-                hoursSet = true;
-                config->use24h = false;
-            }
-        } else if (strcmp(argv[i], "-24h") == 0) {
-            if (hoursSet && !config->use24h) {
-                hoursConflict = true;
-                break;
-            } else {
-                hoursSet = true;
-                config->use24h = true;
-            }
-        } else if (strcmp(argv[i], "-help") == 0) {
-            config->shouldExit = true;
-            printUsage();
-        } else {
-            unknownArg = true;
-            break;
-        }
-    }
-
-    if (unknownArg) {
-        config->shouldExit = true;
-        config->exitCode = 1;
-        printUsage();
-        fprintf(stderr, "!!! Error, encountered an unknown argument: %s\n", argv[i]);
-    } else if (hoursConflict) {
-        config->shouldExit = true;
-        config->exitCode = 1;
-        printUsage();
-        fprintf(stderr, "!!! Error, conflicting arguments for time mode (12-hour versus 24-hour)\n");
-    }
-
-    return config;
-}
-
-/**
- * Prints a short description of the program and lists the usage options
- */
-static void printUsage() {
-    printf(
-    "\n"
-    "ncurses-clock -- draws a clock in the terminal window using the ncurses library\n"
-    "\n"
-    "Usage: ncurses-clock [options]\n"
-    "  options:\n"
-    "    -12h     Display time using 12 hour mode. This is the default.\n"
-    "    -24h     Display time using 24 hour mode\n"
-    "    -help    Display this help message\n"
-    "\n"
-    );
-}
 
 /**
  * Upates the clock window using a pthread
