@@ -9,6 +9,7 @@ INCLUDES = -lncurses -lpthread
 # --- List program modules and associated object files ---
 MODULES_LIST = \
 	main \
+	blockString \
 	clockWindow \
 	dateTimeModel \
 	scanAndConfig \
