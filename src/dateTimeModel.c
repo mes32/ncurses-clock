@@ -11,10 +11,19 @@
 
 static const char *TIME_FORMAT_STRING_12H = "%l:%M:%S %p";  // Format time as a string ( 2:03:56 PM)
 static const char *TIME_FORMAT_STRING_24H = "%H:%M:%S";     // Format time as a string (14:03:56)
+static const char *TIME_FORMAT_STRING_12H_NOSEC = "%l:%M %p";  // Format time as a string ( 2:03 PM)
+static const char *TIME_FORMAT_STRING_24H_NOSEC = "%H:%M";     // Format time as a string (14:03)
+
 static const char *DATE_FORMAT_STRING = "%A - %B %d, %Y";   // Format date as a string Sunday - October 30, 2016
 static const size_t BUFFER_SIZE = 50;                       // Number of characters in string buffers
 
 static char TIME_FORMAT_STRING[16];
+
+
+static void setFormat_12H();
+static void setFormat_24H();
+static void setFormat_12H_NOSEC();
+static void setFormat_24H_NOSEC();
 
 
 /**
@@ -23,11 +32,17 @@ static char TIME_FORMAT_STRING[16];
 void configureTimeMode(ProgramConfig config) {
     // TODO: TIME_FORMAT_STRING len = 16 is a magic number
     if (config.use24h) {
-        size_t len = strlen(TIME_FORMAT_STRING_24H);
-        strncpy(TIME_FORMAT_STRING, TIME_FORMAT_STRING_24H, len);
+        if (config.secsOff) {
+            setFormat_24H_NOSEC();
+        } else {
+            setFormat_24H();
+        }
     } else {
-        size_t len = strlen(TIME_FORMAT_STRING_12H);
-        strncpy(TIME_FORMAT_STRING, TIME_FORMAT_STRING_12H, len);
+        if (config.secsOff) {
+            setFormat_12H_NOSEC();
+        } else {
+            setFormat_12H();
+        }
     }
 }
 
@@ -68,4 +83,24 @@ void updateDateBuffer(char *dateBuffer) {
 void deleteBuffer(char **bufferRef) {
 	free(*bufferRef);
 	*bufferRef = NULL;
+}
+
+static void setFormat_12H() {
+    size_t len = strlen(TIME_FORMAT_STRING_12H);
+    strncpy(TIME_FORMAT_STRING, TIME_FORMAT_STRING_12H, len);
+}
+
+static void setFormat_24H(char **format) {
+    size_t len = strlen(TIME_FORMAT_STRING_12H);
+    strncpy(TIME_FORMAT_STRING, TIME_FORMAT_STRING_24H, len);
+}
+
+static void setFormat_12H_NOSEC(char **format) {
+    size_t len = strlen(TIME_FORMAT_STRING_12H);
+    strncpy(TIME_FORMAT_STRING, TIME_FORMAT_STRING_12H_NOSEC, len);
+}
+
+static void setFormat_24H_NOSEC(char **format) {
+    size_t len = strlen(TIME_FORMAT_STRING_12H);
+    strncpy(TIME_FORMAT_STRING, TIME_FORMAT_STRING_24H_NOSEC, len);
 }

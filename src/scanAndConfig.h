@@ -18,6 +18,7 @@ typedef struct {
     bool shouldExit;
     int exitCode;
     bool use24h;
+    bool secsOff;
 } ProgramConfig;
 
 /**
