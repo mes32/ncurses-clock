@@ -10,145 +10,145 @@
 
 static GlyphMatrix BLOCK_LETTER_A =
 {
-    "  Xx  ",
-    " x  x ",
-    ".X  x.",
-    "xXxxXX",
-    "X    x",
-    "x    X",
-    "X.   X"
+    "  0o  ",
+    " o  o ",
+    ".0  o.",
+    "o0oo00",
+    "0    o",
+    "o    0",
+    "0.   0"
 };
 
 static GlyphMatrix BLOCK_LETTER_M =
 {
-    "X    X",
-    "Xx  xX",
-    "x Xx x",
-    "X    x",
-    "x    X",
-    "x    x",
-    "X    X"
+    "0    0",
+    "0o  o0",
+    "o 0o o",
+    "0    o",
+    "o    0",
+    "o    o",
+    "0    0"
 };
 
 static GlyphMatrix BLOCK_LETTER_P =
 {
-    "XxXXx.",
-    "X    X",
-    "x    x",
-    "XxxXX'",
-    "x     ",
-    "X     ",
-    "x     "
+    "0o00o.",
+    "0    0",
+    "o    o",
+    "0oo00'",
+    "o     ",
+    "0     ",
+    "o     "
 };
 
 static GlyphMatrix BLOCK_LETTER_0 =
 {
-    ".xXXx.",
-    "X    x",
-    "x    X",
-    "x    x",
-    "X    X",
-    "x    X",
-    "`XxxX'"
+    ".o00o.",
+    "0    o",
+    "o    0",
+    "o    o",
+    "0    0",
+    "o    0",
+    "`0oo0'"
 };
 
 static GlyphMatrix BLOCK_LETTER_1 =
 {
-    "  xX  ",
-    "   X  ",
-    "   x  ",
-    "   X  ",
-    "   x  ",
-    "   X  ",
-    " XxxXX"
+    "  o0  ",
+    "   0  ",
+    "   o  ",
+    "   0  ",
+    "   o  ",
+    "   0  ",
+    " 0oo00"
 };
 
 static GlyphMatrix BLOCK_LETTER_2 =
 {
-    ".xXXx.",
-    "     X",
-    "     x",
-    "    X'",
-    "   X  ",
-    " .X   ",
-    "xXxXxX"
+    ".o00o.",
+    "     0",
+    "     o",
+    "    0'",
+    "   0  ",
+    " .0   ",
+    "o0o0o0"
 };
 
 static GlyphMatrix BLOCK_LETTER_3 =
 {
-    ".xXXx.",
-    "     X",
-    "     x",
-    "  .xX ",
-    "     x",
-    "     X",
-    "`XxxX'"
+    ".o00o.",
+    "     0",
+    "     o",
+    "  .o0 ",
+    "     o",
+    "     0",
+    "`0oo0'"
 };
 
 static GlyphMatrix BLOCK_LETTER_4 =
 {
-    "x   X ",
-    "X   x ",
-    "x   x ",
-    "XxxXXx",
-    "    X ",
-    "    x ",
-    "    X "
+    "o   0 ",
+    "0   o ",
+    "o   o ",
+    "0oo00o",
+    "    0 ",
+    "    o ",
+    "    0 "
 };
 
 static GlyphMatrix BLOCK_LETTER_5 =
 {
-    "XxxXXx",
-    "x     ",
-    "X     ",
-    "xxXXx.",
-    "     X",
-    "     x",
-    "`XxxX'"
+    "0oo00o",
+    "o     ",
+    "0     ",
+    "oo00o.",
+    "     0",
+    "     o",
+    "`0oo0'"
 };
 
 static GlyphMatrix BLOCK_LETTER_6 =
 {
-    ".xXXx.",
-    "X     ",
-    "x     ",
-    "XxXXx.",
-    "X    X",
-    "X    x",
-    "`XxxX'"
+    ".o00o.",
+    "0     ",
+    "o     ",
+    "0o00o.",
+    "0    0",
+    "0    o",
+    "`0oo0'"
 };
 
 static GlyphMatrix BLOCK_LETTER_7 =
 {
-    "XxxXxX",
-    "     x",
-    "     X",
-    "    X ",
-    "   X  ",
-    "  x   ",
-    " X    "
+    "0oo0o0",
+    "     o",
+    "     0",
+    "    0 ",
+    "   0  ",
+    "  o   ",
+    " 0    "
 };
 
 static GlyphMatrix BLOCK_LETTER_8 =
 {
-    ".xXXx.",
-    "X    x",
-    "x    X",
-    "`xXXx'",
-    "X    x",
-    "x    X",
-    "`XxxX'"
+    ".o00o.",
+    "0    o",
+    "o    0",
+    "`o00o'",
+    "0    o",
+    "o    0",
+    "`0oo0'"
 };
 
 static GlyphMatrix BLOCK_LETTER_9 =
 {
-    ".xXXx.",
-    "X    x",
-    "x    X",
-    "`XxxXx",
-    "     X",
-    "     x",
-    "`XxxX'"
+    ".o00o.",
+    "0    o",
+    "o    0",
+    "`0oo0o",
+    "     0",
+    "     o",
+    "`0oo0'"
 };
 
 static GlyphMatrix BLOCK_LETTER_PERIOD =
@@ -158,19 +158,19 @@ static GlyphMatrix BLOCK_LETTER_PERIOD =
     "      ",
     "      ",
     "      ",
-    "  xX  ",
-    "  Xx  "
+    "  o0  ",
+    "  0o  "
 };
 
 static GlyphMatrix BLOCK_LETTER_COLON =
 {
-    "  xX  ",
-    "  XX  ",
+    "  o0  ",
+    "  00  ",
     "      ",
     "      ",
     "      ",
-    "  Xx  ",
-    "  xx  "
+    "  0o  ",
+    "  oo  "
 };
 
 static GlyphMatrix BLOCK_LETTER_SPACE =
@@ -186,13 +186,13 @@ static GlyphMatrix BLOCK_LETTER_SPACE =
 
 static GlyphMatrix BLOCK_LETTER_ERROR =
 {
-    "XXXXXX",
-    "X    X",
-    "XXXXXX",
-    "X    X",
-    "XXXXXX",
-    "X    X",
-    "XXXXXX"
+    "000000",
+    "0    0",
+    "000000",
+    "0    0",
+    "000000",
+    "0    0",
+    "000000"
 };
 
 /**
