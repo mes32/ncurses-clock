@@ -7,10 +7,41 @@
 
 #include "blockString.h"
 
-static const int LETTER_HEIGHT = 7;
-static const int LETTER_WIDTH  = 7;
 
-static const Glyph BLOCK_LETTER_0 =
+static GlyphMatrix BLOCK_LETTER_A =
+{
+    "  Xx  ",
+    " x  x ",
+    ".X  x.",
+    "xXxxXX",
+    "X    x",
+    "x    X",
+    "X.   X"
+};
+
+static GlyphMatrix BLOCK_LETTER_M =
+{
+    "X    X",
+    "Xx  xX",
+    "x Xx x",
+    "X    x",
+    "x    X",
+    "x    x",
+    "X    X"
+};
+
+static GlyphMatrix BLOCK_LETTER_P =
+{
+    "XxXXx.",
+    "X    X",
+    "x    x",
+    "XxxXX'",
+    "x     ",
+    "X     ",
+    "x     "
+};
+
+static GlyphMatrix BLOCK_LETTER_0 =
 {
     ".xXXx.",
     "X    x",
@@ -21,7 +52,7 @@ static const Glyph BLOCK_LETTER_0 =
     "`XxxX'"
 };
 
-static const Glyph BLOCK_LETTER_1 =
+static GlyphMatrix BLOCK_LETTER_1 =
 {
     "  xX  ",
     "   X  ",
@@ -32,7 +63,7 @@ static const Glyph BLOCK_LETTER_1 =
     " XxxXX"
 };
 
-static const Glyph BLOCK_LETTER_2 =
+static GlyphMatrix BLOCK_LETTER_2 =
 {
     ".xXXx.",
     "     X",
@@ -43,7 +74,7 @@ static const Glyph BLOCK_LETTER_2 =
     "xXxXxX"
 };
 
-static const Glyph BLOCK_LETTER_3 =
+static GlyphMatrix BLOCK_LETTER_3 =
 {
     ".xXXx.",
     "     X",
@@ -54,7 +85,7 @@ static const Glyph BLOCK_LETTER_3 =
     "`XxxX'"
 };
 
-static const Glyph BLOCK_LETTER_4 =
+static GlyphMatrix BLOCK_LETTER_4 =
 {
     "x   X ",
     "X   x ",
@@ -65,7 +96,7 @@ static const Glyph BLOCK_LETTER_4 =
     "    X "
 };
 
-static const Glyph BLOCK_LETTER_5 =
+static GlyphMatrix BLOCK_LETTER_5 =
 {
     "XxxXXx",
     "x     ",
@@ -76,7 +107,7 @@ static const Glyph BLOCK_LETTER_5 =
     "`XxxX'"
 };
 
-static const Glyph BLOCK_LETTER_6 =
+static GlyphMatrix BLOCK_LETTER_6 =
 {
     ".xXXx.",
     "X     ",
@@ -87,7 +118,7 @@ static const Glyph BLOCK_LETTER_6 =
     "`XxxX'"
 };
 
-static const Glyph BLOCK_LETTER_7 =
+static GlyphMatrix BLOCK_LETTER_7 =
 {
     "XxxXxX",
     "     x",
@@ -98,7 +129,7 @@ static const Glyph BLOCK_LETTER_7 =
     " X    "
 };
 
-static const Glyph BLOCK_LETTER_8 =
+static GlyphMatrix BLOCK_LETTER_8 =
 {
     ".xXXx.",
     "X    x",
@@ -109,7 +140,7 @@ static const Glyph BLOCK_LETTER_8 =
     "`XxxX'"
 };
 
-static const Glyph BLOCK_LETTER_9 =
+static GlyphMatrix BLOCK_LETTER_9 =
 {
     ".xXXx.",
     "X    x",
@@ -120,7 +151,7 @@ static const Glyph BLOCK_LETTER_9 =
     "`XxxX'"
 };
 
-static const Glyph BLOCK_LETTER_PERIOD =
+static GlyphMatrix BLOCK_LETTER_PERIOD =
 {
     "      ",
     "      ",
@@ -131,7 +162,7 @@ static const Glyph BLOCK_LETTER_PERIOD =
     "  Xx  "
 };
 
-static const Glyph BLOCK_LETTER_COLON =
+static GlyphMatrix BLOCK_LETTER_COLON =
 {
     "  xX  ",
     "  XX  ",
@@ -142,7 +173,7 @@ static const Glyph BLOCK_LETTER_COLON =
     "  xx  "
 };
 
-static const Glyph BLOCK_LETTER_SPACE =
+static GlyphMatrix BLOCK_LETTER_SPACE =
 {
     "      ",
     "      ",
@@ -153,62 +184,133 @@ static const Glyph BLOCK_LETTER_SPACE =
     "      "
 };
 
-BlockLetter *initBlockLetter(char inputLetter){
+static GlyphMatrix BLOCK_LETTER_ERROR =
+{
+    "XXXXXX",
+    "X    X",
+    "XXXXXX",
+    "X    X",
+    "XXXXXX",
+    "X    X",
+    "XXXXXX"
+};
+
+/**
+ * Initializes a BlockLetter struct that includes an ASCII art glyph representation of the input char.
+ * A string of BlockLetters can be formed by linking as linked list.
+ */
+BlockLetter *initBlockLetter(char inputLetter, BlockLetter *next){
     BlockLetter *blockLetter = malloc(sizeof(BlockLetter));
 
     blockLetter->height = LETTER_HEIGHT;
-    blockLetter->width = LETTER_WIDTH;
-    blockLetter->next = NULL;
-
-    char b[7][7];
-    char a[7][7] = b;
-    Glyph *ptr = &BLOCK_LETTER_1;
+    blockLetter->width = LETTER_WIDTH - 1;
+    blockLetter->next = next;
 
     switch (inputLetter) {
+        case 'A':
+            blockLetter->glyph = &BLOCK_LETTER_A;
+            break;
+        case 'M':
+            blockLetter->glyph = &BLOCK_LETTER_M;
+            break;
+        case 'P':
+            blockLetter->glyph = &BLOCK_LETTER_P;
+            break;       
         case '0':
+            blockLetter->glyph = &BLOCK_LETTER_0;
+            break;
+        case '1':
             blockLetter->glyph = &BLOCK_LETTER_1;
             break;
-        /*case '1':
-            blockLetter->glyph = BLOCK_LETTER_1;
-            break;
         case '2':
-            blockLetter->glyph = BLOCK_LETTER_1;
+            blockLetter->glyph = &BLOCK_LETTER_2;
             break;
         case '3':
-            blockLetter->glyph = BLOCK_LETTER_1;
+            blockLetter->glyph = &BLOCK_LETTER_3;
             break;
         case '4':
-            blockLetter->glyph = BLOCK_LETTER_1;
+            blockLetter->glyph = &BLOCK_LETTER_4;
             break;
         case '5':
-            blockLetter->glyph = BLOCK_LETTER_1;
+            blockLetter->glyph = &BLOCK_LETTER_5;
             break;
         case '6':
-            blockLetter->glyph = BLOCK_LETTER_1;
+            blockLetter->glyph = &BLOCK_LETTER_6;
             break;
         case '7':
-            blockLetter->glyph = BLOCK_LETTER_1;
+            blockLetter->glyph = &BLOCK_LETTER_7;
             break;
         case '8':
-            blockLetter->glyph = BLOCK_LETTER_1;
+            blockLetter->glyph = &BLOCK_LETTER_8;
             break;
         case '9':
-            blockLetter->glyph = BLOCK_LETTER_1;
+            blockLetter->glyph = &BLOCK_LETTER_9;
             break;
-        case '1':
-            blockLetter->glyph = BLOCK_LETTER_1;
+        case '.':
+            blockLetter->glyph = &BLOCK_LETTER_PERIOD;
             break;
-        case '1':
-            blockLetter->glyph = BLOCK_LETTER_1;
-            break;*/
+        case ':':
+            blockLetter->glyph = &BLOCK_LETTER_COLON;
+            break;
+        case ' ':
+            blockLetter->glyph = &BLOCK_LETTER_SPACE;
+            break;
         default:
-            assert(0);
+            blockLetter->glyph = &BLOCK_LETTER_ERROR;
     }
 
     return blockLetter;
 }
 
+/**
+ * Delete a BlockLetter and free the associated memory
+ */
+void deleteBlockLetter(BlockLetter **letterRef) {
+    free(*letterRef);
+    *letterRef = NULL;
+}
+
+/**
+ * Initialize a BlockString struct. Produces a linked list of BlockLetters based on the input string.
+ */
 BlockString *initBlockString(char *inputString) {
-    return NULL;
+    BlockString *newString = malloc(sizeof(BlockString));
+
+    newString->height = 0;
+    newString->width = 0;
+    BlockLetter *current = NULL;
+    char c;
+
+    int len = strlen(inputString) - 1;
+    for (int i = len; i >= 0; i--) {
+        c = inputString[i];
+        current = initBlockLetter(c, current);
+        newString->width += current->width + INTER_LETTER_SPACE;
+    }
+
+    newString->head = current;
+    return newString;    
+}
+
+/**
+ * Delete a BlockString and free the associated memory
+ */
+void deleteBlockString(BlockString **stringRef) {
+    BlockString *string = *stringRef;
+
+    BlockLetter *toDelete = string->head;
+    BlockLetter *current = string->head->next;
+    if (toDelete != NULL) {
+        deleteBlockLetter(&toDelete);
+    }
+
+    while(current != NULL) {
+        toDelete = current;
+        current = current->next;
+        deleteBlockLetter(&toDelete);
+    }
+
+    free(string);
+    string = NULL;
 }
 

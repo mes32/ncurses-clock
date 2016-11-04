@@ -14,24 +14,46 @@
 #include <string.h>
 
 
-typedef char Glyph[7][6];
+static const size_t LETTER_HEIGHT = 7;
+static const size_t LETTER_WIDTH  = 7;
+static const size_t INTER_LETTER_SPACE = 1;
+
+typedef char GlyphMatrix[7][7];
 
 typedef struct BlockLetter_def {
-	int height;
-	int width;
-	Glyph *glyph;
+	size_t height;
+	size_t width;
+	GlyphMatrix *glyph;
 	struct BlockLetter_def *next;
 } BlockLetter;
 
 typedef struct {
-	int height;
-	int width;
-	BlockLetter *strHead;
+	size_t height;
+	size_t width;
+	BlockLetter *head;
 } BlockString;
 
-BlockLetter *initBlockLetter(char inputLetter);
+/**
+ * Initializes a BlockLetter struct that includes an ASCII art glyph representation of the input char.
+ * A string of BlockLetters can be formed by linking as linked list.
+ */
+BlockLetter *initBlockLetter(char inputLetter, BlockLetter *next);
 
+/**
+ * Delete a BlockLetter and free the associated memory
+ */
+
+void deleteBlockLetter(BlockLetter **letterRef);
+
+/**
+ * Initialize a BlockString struct. Produces a linked list of BlockLetters based on the input string.
+ */
 BlockString *initBlockString(char *inputString);
+
+/**
+ * Delete a BlockString and free the associated memory
+ */
+void deleteBlockString(BlockString **stringRef);
 
 
 #endif

@@ -12,6 +12,7 @@
 
 #include <string.h>
 #include <ncurses.h>
+#include "blockString.h"
 
 
 /**

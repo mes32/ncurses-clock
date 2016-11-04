@@ -14,7 +14,7 @@
 #include "scanAndConfig.h"
 
 
-static const long WAIT_MSEC = 50;
+static const long WAIT_MSEC = 500;
 
 static bool isRunning;
 static pthread_mutex_t lockIsRunning;

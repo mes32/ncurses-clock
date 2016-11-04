@@ -15,7 +15,7 @@ static const enum ColorPairType {   // Pairs of colors available for drawing
 } ColorPairs;          
 static int row, col;                // Dimensions of the window
 
-static void printTime(char *currentTime);
+static void printTime(BlockString *currentTime);
 static void printDate(char *currentDate);
 static void printFooter();
 static void cursorToRestPosition();
@@ -56,7 +56,11 @@ void resetClockWindow() {
  * Draw the current state of the window 
  */
 void updateClockWindow(char *timeBuffer, char *dateBuffer) {
-	printTime(timeBuffer);
+
+    BlockString *testString = initBlockString(timeBuffer);
+	printTime(testString);
+    deleteBlockString(&testString);
+
     printDate(dateBuffer);
     printFooter();
 
@@ -75,11 +79,25 @@ void deleteClockWindow() {
 }
 
 /**
- * Prints the current time from the buffer
+ * Prints the current time from the currentTime BlockString
  */ 
-static void printTime(char *currentTime) {
+static void printTime(BlockString *currentTime) {
+
     attron(COLOR_PAIR(COLOR_PAIR_GREEN));
-    mvprintw(row / 2, (col - strlen(currentTime)) / 2, "%s", currentTime);
+
+    BlockLetter *letter = currentTime->head;
+    int x = (col - currentTime->width) / 2 ;
+
+    while (letter != NULL) {
+        for (int i=0; i < LETTER_HEIGHT; i++) {
+            int y = row / 2 - LETTER_HEIGHT + i;
+            char *line = (*letter->glyph)[i];
+            mvprintw(y, x, "%s", line);
+        }
+        x += letter->width + INTER_LETTER_SPACE;
+        letter = letter->next;
+    }
+
     attroff(COLOR_PAIR(COLOR_PAIR_GREEN));
 }
 
