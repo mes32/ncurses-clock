@@ -186,13 +186,13 @@ static GlyphMatrix BLOCK_LETTER_SPACE =
 
 static GlyphMatrix BLOCK_LETTER_ERROR =
 {
-    "000000",
-    "0    0",
-    "000000",
-    "0    0",
-    "000000",
-    "0    0",
-    "000000"
+    "XXXXXX",
+    "XXXXXX",
+    "XXXXXX",
+    "XXXXXX",
+    "XXXXXX",
+    "XXXXXX",
+    "XXXXXX"
 };
 
 /**
