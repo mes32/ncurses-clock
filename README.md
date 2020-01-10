@@ -6,9 +6,9 @@ Draws a clock in the terminal window using the ncurses library
 
 ## Setup
 
-```
+```bash
 # Clone this repository
-git clone 
+git clone https://github.com/mes32/ncurses-clock.git
 
 # Compile the program using the Makefile
 cd ncurses-clock
